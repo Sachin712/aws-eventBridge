@@ -2,6 +2,7 @@ import {Construct} from 'constructs';
 import * as cdk from "aws-cdk-lib";
 
 import { S3Stack } from "../lib/s3_stack";
+import { FunctionStack } from '../lib/function_stack';
 
 export class MainStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -9,5 +10,8 @@ export class MainStack extends cdk.Stack {
 
     // Create the S3 stack
     const s3Stack = new S3Stack(this, 'S3Stack');
+
+    // Create the Lambda function stack
+    const functionStack = new FunctionStack(this, 'FunctionStack');
   }
 }

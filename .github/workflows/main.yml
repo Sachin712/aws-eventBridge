@@ -30,6 +30,6 @@ jobs:
       - name: Deploy AWS CDK
         run: |
           npm install
-          npx ts-node bin/main_stack.ts
+          npx cdk deploy --require-approval never --app 'node bin/main_stack.ts' 
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
