@@ -1,15 +1,32 @@
-name: AWS CDK Deploy
+name: Auto Merge on Comment
 
 on:
-  push:
-    branches:
-      - initialSetup
+  issue_comment:
+    types:
+      - created
 
 jobs:
-  deploy:
+  auto_merge:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Check for Specific Comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.PR_GITHUB_TOKEN }}
+          script: |
+            const comment = context.payload.comment.body;
+            if (comment.includes("cdk diff start")) {
+              console.log('Specific comment detected.');
+              return true;
+            } else {
+              console.log('Specific comment not detected.');
+              return false;
+            }
+
+      - name: Run Other Actions
+        if: steps.auto_merge.outputs.commentDetected == 'true'
+        # Add your other workflow steps here
+        # For example, build and test your code
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -37,30 +54,10 @@ jobs:
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
 
-      - name: Check Deployment Status
-        id: check-status
+      - name: Merge PR
+        if: success() && steps.auto_merge.outputs.commentDetected == 'true'
         run: |
-          echo "Deployment Status: ${{ job.status }}"
-
-  retry:
-    if: ${{ needs.deploy.outputs.deploy-cdk == 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Deployment Status
-        id: check-status
-        run: |
-          echo "Deployment Status: ${{ job.status }}"
-
-  merge:
-    if: ${{ needs.deploy.outputs.deploy-cdk == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merge Pull Request
-        run: |
-          PR_NUMBER=$(jq -r ".pull_request.number" "$GITHUB_EVENT_PATH")
-          GITHUB_TOKEN="$PR_GITHUB_TOKEN"
-          # Merge the pull request
-          curl -X PUT "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/merge" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            -d '{"commit_title": "Auto Merge", "merge_method": "squash"}'
+          # Use GitHub CLI to merge the pull request
+          gh pr merge ${{ github.event.issue.number }} --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
