@@ -1,33 +1,15 @@
-name: Auto Merge on Comment
+name: AWS CDK Deploy
 
 on:
-  issue_comment:
-    types: [created, edited, deleted]
+  push:
+    branches:
+      - initialSetup
 
 jobs:
-  auto_merge:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check for Specific Comment
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.PR_GITHUB_TOKEN }}
-          script: |
-            const comment = context.payload.comment.body;
-            if (comment.includes("cdk diff start")) {
-              console.log('Specific comment detected.');
-              return true;
-            } else {
-              console.log('Specific comment not detected.');
-              return false;
-            }
-
-      - name: Run Other Actions
-        if: steps.auto_merge.outputs.commentDetected == 'true'
-        # Add your other workflow steps here
-        # For example, build and test your code
-        run: echo "Running other actions"
-
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -46,19 +28,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy AWS CDK
-        id: deploy-cdk
         run: |
           npm install
-          # npx ts-node bin/main_stack.ts 
-          # npx tsc
-          npx cdk deploy --require-approval never --app 'node bin/main_stack.ts'        
+          npx ts-node bin/main_stack.ts
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
-
-      - name: Merge PR
-        if: success() && steps.auto_merge.outputs.commentDetected == 'true'
-        run: |
-          # Use GitHub CLI to merge the pull request
-          gh pr merge ${{ github.event.issue.number }} --auto
-        env:
-          GITHUB_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
