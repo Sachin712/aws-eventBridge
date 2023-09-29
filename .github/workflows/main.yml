@@ -2,8 +2,7 @@ name: Auto Merge on Comment
 
 on:
   issue_comment:
-    types:
-      - created
+    types: [created, edited, deleted]
 
 jobs:
   auto_merge:
@@ -28,7 +27,7 @@ jobs:
         # Add your other workflow steps here
         # For example, build and test your code
         run: echo "Running other actions"
-        
+
       - name: Check out code
         uses: actions/checkout@v2
 
