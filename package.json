@@ -2,8 +2,6 @@
   "name": "aws-eventbridge",
   "version": "1.0.0",
   "description": "This repository explains the AWS Event bridge service. The event rule triggers a step function and a lambda when a new file arrives at a specific location in the S3 bucket.",
-  "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "cdk": "cdk",
