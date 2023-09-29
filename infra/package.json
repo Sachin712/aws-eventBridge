@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "aws-event_bridge": "bin/aws-event_bridge.js"
+    "infra": "bin/main_stack.js"
   },
   "scripts": {
     "build": "tsc",
