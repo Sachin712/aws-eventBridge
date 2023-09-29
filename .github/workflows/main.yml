@@ -1,15 +1,19 @@
 name: AWS CDK Deploy
 
 on:
-  push:
-    branches:
-      - sandbox
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  build:
+  auto_merge:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -33,3 +37,16 @@ jobs:
           npx cdk deploy --require-approval never --app 'node bin/main_stack.ts'
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
+
+      - name: Merge Pull Request
+        if: success()
+        run: |
+          # Merge the pull request using the GitHub API
+          PR_NUMBER=$(jq -r ".pull_request.number" "$GITHUB_EVENT_PATH")
+          GITHUB_TOKEN="$PR_GITHUB_TOKEN"
+          
+          # Merge the pull request
+          curl -X PUT "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/merge" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -d '{"commit_title": "Auto Merge", "merge_method": "squash"}'
