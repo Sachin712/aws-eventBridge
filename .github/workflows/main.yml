@@ -3,7 +3,7 @@ name: AWS CDK Deploy
 on:
   push:
     branches:
-      - main
+      - sandbox
 
 jobs:
   build:
