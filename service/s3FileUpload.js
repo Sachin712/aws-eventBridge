@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk'
 const s3 = new AWS.S3();
 
-import {globals as G} from '../infra/lib/globals';
+//import {globals as G} from '../infra/lib/globals';
 
 export async function handler(event) {
   const params = {
-    Bucket: G.s3_bucketName,
+    Bucket: `eventBridgeDemoBucket`,
     Key: "example-file.txt",
     Body: "Hello, world!",
   };
