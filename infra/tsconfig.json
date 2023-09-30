@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./infra", // Set to the 'infra' directory as it's the root for module resolution
+    "paths": {
+      "lib/*": ["lib/*"] // Alias all modules under the 'lib' directory
+    },
     "moduleResolution": "Node",
     "target": "ES2020",
     "module": "ESNext",
