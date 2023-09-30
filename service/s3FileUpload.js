@@ -1,4 +1,4 @@
-const AWS = require("aws-sdk");
+import AWS from 'aws-sdk'
 const s3 = new AWS.S3();
 
 import {globals as G} from '../infra/lib/globals';
