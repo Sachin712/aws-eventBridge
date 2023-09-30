@@ -1,7 +1,6 @@
 {
   "name": "aws-event_bridge",
   "version": "0.1.0",
-  "type": "module",
   "bin": {
     "infra": "bin/main_stack.js"
   },
