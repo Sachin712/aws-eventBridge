@@ -1,7 +1,7 @@
 import {Construct} from 'constructs';
 import * as cdk from "aws-cdk-lib";
 
-import { S3Stack } from "../lib/s3_stack";
+import  {S3Stack}  from "../lib/s3_stack";
 import { FunctionStack } from '../lib/function_stack';
 
 export class MainStack extends cdk.Stack {
