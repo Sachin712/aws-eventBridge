@@ -4,12 +4,12 @@ import * as core from 'aws-cdk-lib/core';
 
 import {globals as G} from './globals';
 
-const bucketName = G.s3_bucketName;
 export class S3Stack extends core.Stack {
   public readonly bucket: s3.Bucket;
-
+  
   constructor(scope: Construct, id: string, props?: core.StackProps) {
     super(scope, id, props);
+    const bucketName = G.s3_bucketName;
 
     // Create an S3 bucket
     this.bucket = new s3.Bucket(this, bucketName, {
