@@ -30,7 +30,7 @@ jobs:
       - name: Deploy AWS CDK
         run: |
           cd ./infra && npm install
-          cd ./bin
+          # cd ./bin
           cdk deploy --require-approval never
           # npx ts-node main_stack.ts
         env:
