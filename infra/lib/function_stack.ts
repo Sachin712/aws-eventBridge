@@ -21,6 +21,7 @@ export class FunctionStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
 
+    //policy added
     lambdaRole.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")
     );
