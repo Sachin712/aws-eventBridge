@@ -36,3 +36,4 @@ jobs:
           # npx ts-node main_stack.ts
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
