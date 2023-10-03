@@ -33,7 +33,7 @@ export class FunctionStack extends cdk.Stack {
     this.lambdaFunction = new lambda.Function(this, "MyLambdaFunction", {
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: "s3FileUpload.handler", // Update with your Lambda handler
-      code: lambda.Code.fromAsset("service"), // Assuming your Lambda code is in a 'service' directory
+      code: lambda.Code.fromAsset("../service"), // Assuming your Lambda code is in a 'service' directory
       role: lambdaRole,
     });
   }
