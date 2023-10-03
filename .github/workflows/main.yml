@@ -31,7 +31,7 @@ jobs:
         run: |
           cd ./infra && npm install
           # cd ./bin
-          npx cdk deploy --app "npx ts-node main_stack.ts" --require-approval never
+          npx cdk deploy --app "npx ts-node infra/bin/main_stack.ts" --require-approval never
           # npx ts-node main_stack.ts
         env:
           AWS_DEFAULT_REGION: "us-east-2" # Replace with your preferred region
